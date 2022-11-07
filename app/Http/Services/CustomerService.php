@@ -35,8 +35,6 @@ class CustomerService
                 ->groupBy('method');
         }]);
 
-//        if ($request->filled('order_by')) $customers = $customers->latest();
-
         return $customers->paginate($request->per_page);
     }
 }

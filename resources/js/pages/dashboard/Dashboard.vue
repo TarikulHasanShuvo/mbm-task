@@ -207,6 +207,7 @@ export default {
         searchHandaler() {
             clearTimeout(this.timer)
             this.timer = setTimeout(() => {
+                this.pagination.page = 1;
                 this.getCustomers();
             }, 300)
 
@@ -228,17 +229,19 @@ export default {
             this.editData = {
                 'name' : customer.name,
                 'phone' : customer.phone,
-                'address' : customer.customer_address.address,
-                'city' : customer.customer_address.city,
-                'zip' : customer.customer_address.zip,
+                'address' : customer.customer_address ? customer.customer_address.address : '',
+                'city' : customer.customer_address ? customer.customer_address.city : "",
+                'zip' : customer.customer_address ? customer.customer_address.zip : "",
             }
         }
     },
     watch: {
         'pagination.perPage': function () {
+            this.pagination.page = 1;
             this.getCustomers();
         },
         'search.any': function () {
+            this.pagination.page = 1;
             this.getCustomers();
         },
     }

@@ -23,30 +23,31 @@ export default {
     computed: {
         customers() {
             let customersData = []
-             this.$parent.$parent.customers.forEach((customer) =>{
-                 let payment = ""
-                 if(customer.customer_purchase.length){
-                        customer.customer_purchase.forEach((purchase) =>{
-                            payment += "Method = "+purchase.method + ", Amount = "+purchase.max_amount +" | "
-                        })
-                 }
-                customersData.push({
-                    'Name': customer.name,
-                    'Phone': customer.phone,
-                    'Address': customer.customer_address ?  customer.customer_address.address : '',
-                    'City':  customer.customer_address ?  customer.customer_address.city : '',
-                    'Zip':  customer.customer_address ?  customer.customer_address.zip : '',
-                    'Payment':  payment,
-                    'Created At': customer.created_at,
-                    'Updated At': customer.updated_at,
-                })
+            const columnList = this.$parent.$parent.columnList;
+            this.$parent.$parent.customers.forEach((customer) => {
+                let method = ""
+                let amount = ""
+                if (customer.customer_purchase.length) {
+                    customer.customer_purchase.forEach((purchase,index) => {
+                        method += purchase.method + (customer.customer_purchase.length > (index+1) ? ", " : ".");
+                        amount += purchase.max_amount +(customer.customer_purchase.length > (index+1) ? ", " : "");
+                    })
+                }
+                let customerData = {}
+                if (columnList.find((column) => column.name == "Name").value) customerData["Name"] = customer.name;
+                if (columnList.find((column) => column.name == "Phone").value) customerData["Phone"] = customer.phone;
+                if (columnList.find((column) => column.name == "Address").value) customerData["Address"] = customer.customer_address ? customer.customer_address.address : '';
+                if (columnList.find((column) => column.name == "City").value) customerData["City"] = customer.customer_address ? customer.customer_address.city : '';
+                if (columnList.find((column) => column.name == "Zip").value) customerData["Zip"] = customer.customer_address ? customer.customer_address.zip : '';
+                if (columnList.find((column) => column.name == "Method").value) customerData["Method"] = method;
+                if (columnList.find((column) => column.name == "Amount").value) customerData["Amount"] = amount;
+
+                customersData.push(customerData)
             })
-
-
-            return customersData;
+                return customersData;
         }
     }
-}
+    }
 </script>
 
 <style scoped>

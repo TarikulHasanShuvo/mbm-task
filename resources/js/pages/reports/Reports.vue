@@ -50,15 +50,17 @@
                 }}
             </td>
             <td>
-                        <span v-if="customer.customer_purchase.length"
+                        <span v-if="customer.customer_purchase.length > 0"
                               v-for="customer_purchase in customer.customer_purchase">
                             <span> {{ customer_purchase.method }}</span><br>
                         </span>
+                <span v-else>-</span>
             </td>
-            <td>                        <span v-if="customer.customer_purchase.length"
-                                              v-for="customer_purchase in customer.customer_purchase">
+            <td>
+                <span v-if="customer.customer_purchase.length > 0" v-for="customer_purchase in customer.customer_purchase">
                             <span> {{ customer_purchase.max_amount }}</span><br>
                         </span>
+                <span v-else>-</span>
             </td>
         </tr>
         </tbody>

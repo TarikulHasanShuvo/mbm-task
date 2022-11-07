@@ -41,9 +41,9 @@ var render = function render() {
         scope: "row"
       }
     }, [_vm._v("\n                " + _vm._s(customer ? customer.id : "") + "\n            ")]), _vm._v(" "), _c("td", [_vm._v("\n                " + _vm._s(customer.name ? customer.name : "-") + "\n            ")]), _vm._v(" "), _c("td", [_vm._v("\n                " + _vm._s(customer.phone ? customer.phone : "-") + "\n            ")]), _vm._v(" "), _c("td", [_vm._v("\n                " + _vm._s(customer.customer_address ? customer.customer_address.address : "-") + "\n            ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(customer.customer_address ? customer.customer_address.city : "-") + "\n            ")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(customer.customer_address ? customer.customer_address.zip : "-") + "\n            ")]), _vm._v(" "), _c("td", _vm._l(customer.customer_purchase, function (customer_purchase) {
-      return customer.customer_purchase.length ? _c("span", [_c("span", [_vm._v(" " + _vm._s(customer_purchase.method))]), _c("br")]) : _vm._e();
+      return customer.customer_purchase.length > 0 ? _c("span", [_c("span", [_vm._v(" " + _vm._s(customer_purchase.method))]), _c("br")]) : _c("span", [_vm._v("-")]);
     }), 0), _vm._v(" "), _c("td", _vm._l(customer.customer_purchase, function (customer_purchase) {
-      return customer.customer_purchase.length ? _c("span", [_c("span", [_vm._v(" " + _vm._s(customer_purchase.max_amount))]), _c("br")]) : _vm._e();
+      return customer.customer_purchase.length > 0 ? _c("span", [_c("span", [_vm._v(" " + _vm._s(customer_purchase.max_amount))]), _c("br")]) : _c("span", [_vm._v("-")]);
     }), 0)]);
   }), 0) : _vm._e()])]);
 };

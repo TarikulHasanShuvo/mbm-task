@@ -5454,6 +5454,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
       clearTimeout(this.timer);
       this.timer = setTimeout(function () {
+        _this2.pagination.page = 1;
         _this2.getCustomers();
       }, 300);
     },
@@ -5474,17 +5475,19 @@ __webpack_require__.r(__webpack_exports__);
       this.editData = {
         'name': customer.name,
         'phone': customer.phone,
-        'address': customer.customer_address.address,
-        'city': customer.customer_address.city,
-        'zip': customer.customer_address.zip
+        'address': customer.customer_address ? customer.customer_address.address : '',
+        'city': customer.customer_address ? customer.customer_address.city : "",
+        'zip': customer.customer_address ? customer.customer_address.zip : ""
       };
     }
   },
   watch: {
     'pagination.perPage': function paginationPerPage() {
+      this.pagination.page = 1;
       this.getCustomers();
     },
     'search.any': function searchAny() {
+      this.pagination.page = 1;
       this.getCustomers();
     }
   }
@@ -5526,23 +5529,39 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     customers: function customers() {
       var customersData = [];
+      var columnList = this.$parent.$parent.columnList;
       this.$parent.$parent.customers.forEach(function (customer) {
-        var payment = "";
+        var method = "";
+        var amount = "";
         if (customer.customer_purchase.length) {
-          customer.customer_purchase.forEach(function (purchase) {
-            payment += "Method = " + purchase.method + ", Amount = " + purchase.max_amount + " | ";
+          customer.customer_purchase.forEach(function (purchase, index) {
+            method += purchase.method + (customer.customer_purchase.length > index + 1 ? ", " : ".");
+            amount += purchase.max_amount + (customer.customer_purchase.length > index + 1 ? ", " : "");
           });
         }
-        customersData.push({
-          'Name': customer.name,
-          'Phone': customer.phone,
-          'Address': customer.customer_address ? customer.customer_address.address : '',
-          'City': customer.customer_address ? customer.customer_address.city : '',
-          'Zip': customer.customer_address ? customer.customer_address.zip : '',
-          'Payment': payment,
-          'Created At': customer.created_at,
-          'Updated At': customer.updated_at
-        });
+        var customerData = {};
+        if (columnList.find(function (column) {
+          return column.name == "Name";
+        }).value) customerData["Name"] = customer.name;
+        if (columnList.find(function (column) {
+          return column.name == "Phone";
+        }).value) customerData["Phone"] = customer.phone;
+        if (columnList.find(function (column) {
+          return column.name == "Address";
+        }).value) customerData["Address"] = customer.customer_address ? customer.customer_address.address : '';
+        if (columnList.find(function (column) {
+          return column.name == "City";
+        }).value) customerData["City"] = customer.customer_address ? customer.customer_address.city : '';
+        if (columnList.find(function (column) {
+          return column.name == "Zip";
+        }).value) customerData["Zip"] = customer.customer_address ? customer.customer_address.zip : '';
+        if (columnList.find(function (column) {
+          return column.name == "Method";
+        }).value) customerData["Method"] = method;
+        if (columnList.find(function (column) {
+          return column.name == "Amount";
+        }).value) customerData["Amount"] = amount;
+        customersData.push(customerData);
       });
       return customersData;
     }
